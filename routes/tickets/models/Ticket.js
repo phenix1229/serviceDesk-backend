@@ -12,3 +12,5 @@ const TicketSchema = new mongoose.Schema({
     closedBy:{type:String},
     closeDate:{type:String}
 });
+
+module.exports = mongoose.model('Ticket', TicketSchema);
