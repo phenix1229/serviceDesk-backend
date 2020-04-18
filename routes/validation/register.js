@@ -1,7 +1,7 @@
 const Validator = require('validator');
 const isEmpty = require('is-empty');
 
-validateRegisterInput = (data) => {
+const validateRegisterInput = (data) => {
     let errors = {};
     data.name = !isEmpty(data.name) ? data.name : '';
     data.email = !isEmpty(data.email) ? data.email : '';
