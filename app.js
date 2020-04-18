@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+// require('./lib/passport')(passport);
 require('dotenv').config();
 
 const indexRouter = require('./routes/index');
@@ -19,6 +21,9 @@ mongoose.connect(process.env.MONGODB_URI, {
 }).then(()=>{
   console.log('MongoDB connected');
 }).catch(err => console.log(`Mongo Error: ${err}`));
+
+app.use(passport.initialize());
+// require('./lib/passport')(passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

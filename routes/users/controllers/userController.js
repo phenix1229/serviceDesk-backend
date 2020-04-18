@@ -36,7 +36,7 @@ module.exports = {
         User.findOne({email})
         .then(user => {
             if(!user){
-                return res.status(404).json({message: 'User not found'});
+                return res.status(404).json({message: 'Email or password incorrect'});
             };
             bcrypt.compare(password, user.password)
             .then(isMatch => {
@@ -61,5 +61,7 @@ module.exports = {
             });
         });
     },
-    logout
+    logout: (req, res) => {
+
+    }
 }
