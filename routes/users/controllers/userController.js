@@ -1,67 +1,57 @@
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const validateRegisterInput = require('../../validation/register');
-const validateLoginInput = require('../../validation/login');
 const User = require('../models/User');
+const { validationResult } = require('express-validator');
+const passport = require('passport');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
-    register: (req, res) => {
-        const {errors, isValid} = validateRegisterInput(req.body);
-        if(!isValid){
-            return res.status(400).json(errors);
-        };
-        User.findOne({email:req.body.email})
-        .then(user => {
-            if(user){
-                return res.status(400).json({message: 'User already exists'});
+    //register new user
+    register: (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.render('auth/error', { error: errors.array() });
+        }
+        const { name, email, password } = req.body;
+        User.findOne({ email }).then(user => {
+            if (user) {
+                return res.json({error:'User exists'});
             } else {
-                const newUser = new User({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: req.body.password
-                });
-                newUser.save()
-                .then(user => res.json(user))
-                .catch(err => console.log(err));
-            };
-        });
-    },
-    login: (req, res) => {
-        const {errors, isValid} = validateLoginInput(req.body);
-        if(!isValid){
-            return res.status(400).json(errors);
-        };
-        const {email, password} = req.body;
-        User.findOne({email})
-        .then(user => {
-            if(!user){
-                return res.status(404).json({message: 'Email or password incorrect'});
-            };
-            bcrypt.compare(password, user.password)
-            .then(isMatch => {
-                if(isMatch){
-                    const payload = {
-                        id: user._id,
-                        name: user.name
-                    };
-                    jwt.sign(
-                        payload,
-                        {expiresIn: 31556926},
-                        (err, token) => {
-                            res.json({
-                                success: true,
-                                token: 'Bearer' + token
-                            });
+                const newUser = new User();
+                newUser.name = name;
+                newUser.email = email;
+                newUser.password = password;
+                newUser
+                .save()
+                .then(user => {
+                    req.login(user, err => {
+                        if (err) {
+                            return res
+                            .status(400)
+                            .json({ confirmation: false, message: err });
+                        } else {
+                            res.redirect('/auth/options');
                         }
-                    );
-                } else {
-                    return res.status(400).json({message: 'Email or password incorrect'});
-                };
-            });
-        });
+                    });
+                })
+                .catch(err => {
+                    return next(err);
+                });
+            }
+        })
+        .catch(err => reject(err));
     },
-    logout: (req, res) => {
-
+    
+    //login user
+    login: passport.authenticate('local-login', {
+        successRedirect: '/',
+        failureRedirect: '/api/users/loginError',
+        failureFlash: true
+    }),
+    
+    //logout user, end session
+    logout:(req, res) => {
+        req.session.destroy();
+        console.log('logout ', req.session);
+        req.logout();
+        return res.redirect('/');
     }
 }
