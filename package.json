@@ -1,33 +1,20 @@
 {
-  "name": "servicedesk-backend",
+  "name": "blog-backend",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "client-install": "npm install --prefix ../servicedesk-frontend",
-    "server": "nodemon ./bin/www",
-    "client": "npm start --prefix ../servicedesk-frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "nodemon ./bin/www"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "concurrently": "^5.1.0",
-    "connect-mongo": "^3.2.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
-    "express-session": "^1.17.1",
-    "express-validator": "^6.4.0",
     "http-errors": "~1.6.3",
-    "is-empty": "^1.2.0",
-    "mongoose": "^5.9.9",
-    "morgan": "~1.9.1",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
-    "validator": "^13.0.0"
+    "mongoose": "^5.9.7",
+    "morgan": "~1.9.1"
   }
 }
