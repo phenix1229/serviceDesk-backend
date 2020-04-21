@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const Ticket = require('../models/Ticket');
 
 /* GET home page. */
@@ -23,6 +23,7 @@ router.post('/ticket', (req, res) => {
 router.get('/tickets', (req, res) => {
   Ticket.find({}).then((tickets) => {
     tickets.reverse();
+    console.log(tickets)
     return res.json(tickets);
   });
 });
