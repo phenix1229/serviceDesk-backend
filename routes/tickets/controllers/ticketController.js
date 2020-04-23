@@ -7,6 +7,7 @@ module.exports = {
         newTicket.client = req.body.client;
         newTicket.issue = req.body.issue;
         newTicket.resolution = req.body.resolution;
+        newTicket.open = req.body.open;
         newTicket.closedBy = req.body.closedBy;
         newTicket.closeDate = req.body.closeDate;
         newTicket.save().then((ticket) => {
