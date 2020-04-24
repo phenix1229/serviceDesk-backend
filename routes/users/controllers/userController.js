@@ -161,7 +161,7 @@ module.exports = {
             })
         })
     },
-    
+
     //render login error page
     loginError: (req, res) => {
         res.render('auth/error', {error: 'Please check that you are registered and are using the correct email address and password.'})
@@ -172,6 +172,6 @@ module.exports = {
         req.session.destroy();
         console.log('logout ', req.session);
         req.logout();
-        return res.redirect('/');
+        return res.json({message:'Logged out'});
     }
 }

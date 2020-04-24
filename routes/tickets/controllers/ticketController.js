@@ -6,6 +6,7 @@ module.exports = {
         newTicket.openedBy = req.body.openedBy;
         newTicket.client = req.body.client;
         newTicket.issue = req.body.issue;
+        newTicket.comments = req.body.comments;
         newTicket.resolution = req.body.resolution;
         newTicket.open = req.body.open;
         newTicket.closedBy = req.body.closedBy;
