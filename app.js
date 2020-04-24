@@ -5,7 +5,12 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const passport = require('passport');
+const usersRouter = require('./routes/users/userRoutes');
 require('dotenv').config();
+require('./lib/passport');
 
 const ticketRouter = require('./routes/tickets/ticket');
 
@@ -28,6 +33,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  resave:true,
+  saveUninitialized:true,
+  secret:process.env.SESSION_SECRET,
+  store: new MongoStore({
+    url:process.env.MONGODB_URI,
+    autoReconnect:true,
+    cookie: {maxAge: 60000}
+  })
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+})
+
+app.use('/users', usersRouter);
 
 app.use('/', ticketRouter);
 
