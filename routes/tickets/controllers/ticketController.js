@@ -28,9 +28,11 @@ module.exports = {
     },
     updateTicket:(req, res) => {
         Ticket.findById({ _id: req.params.id }).then((ticket) => {
-            ticket.client = req.body.client ? req.body.client : ticket.client;
-            ticket.issue = req.body.issue ? req.body.issue : ticket.issue;
+            ticket.open = req.body.open ? req.body.open : ticket.open;
+            // ticket.client = req.body.client ? req.body.client : ticket.client;
+            // ticket.issue = req.body.issue ? req.body.issue : ticket.issue;
             ticket.resolution = req.body.resolution ? req.body.resolution : ticket.resolution;
+            ticket.comments = req.body.comments ? req.body.comments : ticket.comments;
             ticket.closedBy = req.body.closedBy ? req.body.closedBy : ticket.closedBy;
             ticket.closeDate = req.body.closeDate ? req.body.closeDate : ticket.closeDate;
             ticket.save().then((ticket) => res.json(ticket));

@@ -8,7 +8,7 @@ const TicketSchema = new mongoose.Schema({
   openDate:{type:String, default:today},
   client:{type:String},
   issue:{type:String},
-  comments:[],
+  comments:{type:Array, default:[]},
   resolution:{type:String},
   open:{type:Boolean, default:true},
   closedBy:{type:String},
