@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const today = () =>{
   return `${new Date().getMonth()+1}/${new Date().getDate()}/${new Date().getFullYear()} (${new Date().getHours()}:${new Date().getMinutes()})`;
 };

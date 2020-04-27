@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-require('../../lib/passport');
-
 const userController = require('./controllers/userController');
 const userValidation = require('./utils/userValidation');
 
